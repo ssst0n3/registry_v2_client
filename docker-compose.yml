@@ -1,0 +1,7 @@
+version: '3'
+services:
+  registry_for_test:
+    image: registry
+    restart: always
+    ports:
+      - "5000:5000"

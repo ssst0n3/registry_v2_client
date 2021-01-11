@@ -1,0 +1,3 @@
+package test_data
+
+var BlobHelloWolrdDigest = "sha256:0e03bdcc26d7a9a57ef3b6f1bf1a210cff6239bff7c8cac72435984032851689"
