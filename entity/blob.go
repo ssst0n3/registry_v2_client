@@ -9,22 +9,24 @@ import (
 )
 
 type Blob struct {
-	Method         string        `json:"method"`
-	RepositoryName string        `json:"repository_name"`
-	Digest         digest.Digest `json:"digest"`
-	Part           bool          `json:"part"`
-	Start          int           `json:"start"`
-	End            int           `json:"end"`
+	Method          string        `json:"method"`
+	RepositoryName  string        `json:"repository_name"`
+	Digest          digest.Digest `json:"digest"`
+	Part            bool          `json:"part"`
+	Start           int           `json:"start"`
+	End             int           `json:"end"`
+	FollowRedirects bool          `json:"follow_redirects"`
 }
 
-func NewBlob(method, repositoryName, dgs string, part bool, start, end int) Blob {
+func NewBlob(method, repositoryName, dgs string, part bool, start, end int, followRedirects bool) Blob {
 	return Blob{
-		Method:         method,
-		RepositoryName: repositoryName,
-		Digest:         digest.Digest(dgs),
-		Part:           part,
-		Start:          start,
-		End:            end,
+		Method:          method,
+		RepositoryName:  repositoryName,
+		Digest:          digest.Digest(dgs),
+		Part:            part,
+		Start:           start,
+		End:             end,
+		FollowRedirects: followRedirects,
 	}
 }
 
@@ -56,6 +58,9 @@ func (e Blob) GetHeader() (header map[string]string) {
 }
 
 func (e Blob) CheckRedirect() (f func(req *http.Request, via []*http.Request) (err error)) {
+	if e.FollowRedirects {
+		return
+	}
 	return func(req *http.Request, via []*http.Request) (err error) {
 		return http.ErrUseLastResponse
 	}

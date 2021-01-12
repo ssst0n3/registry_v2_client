@@ -10,7 +10,7 @@ import (
 )
 
 func (r Registry) GetBlob(repositoryName, dgs string) (exists bool, err error) {
-	e := entity.NewBlob(http.MethodHead, repositoryName, dgs, false, 0, 0)
+	e := entity.NewBlob(http.MethodHead, repositoryName, dgs, false, 0, 0, true)
 	resp, err := r.NotCareBody(e)
 	if err != nil {
 		awesome_error.CheckErr(err)
@@ -22,7 +22,7 @@ func (r Registry) GetBlob(repositoryName, dgs string) (exists bool, err error) {
 	return
 }
 
-func (r Registry) fetchBlobCommon(e entity.Entity, followRedirects bool) (content []byte, err error) {
+func (r Registry) fetchBlobCommon(e entity.Entity) (content []byte, err error) {
 	resp, err := r.Do(e)
 	if err != nil {
 		awesome_error.CheckErr(err)
@@ -30,7 +30,7 @@ func (r Registry) fetchBlobCommon(e entity.Entity, followRedirects bool) (conten
 	}
 	defer resp.Body.Close()
 
-	if !followRedirects && resp.StatusCode == 302 {
+	if resp.StatusCode == 302 {
 		doc, err := goquery.NewDocumentFromReader(resp.Body)
 		if err != nil {
 			awesome_error.CheckErr(err)
@@ -55,17 +55,17 @@ func (r Registry) fetchBlobCommon(e entity.Entity, followRedirects bool) (conten
 }
 
 func (r Registry) FetchBlob(repositoryName, dgs string, followRedirects bool) (content []byte, err error) {
-	e := entity.NewBlob(http.MethodGet, repositoryName, dgs, false, 0, 0)
-	return r.fetchBlobCommon(e, followRedirects)
+	e := entity.NewBlob(http.MethodGet, repositoryName, dgs, false, 0, 0, followRedirects)
+	return r.fetchBlobCommon(e)
 }
 
 func (r *Registry) FetchBlobPart(repositoryName, dgs string, start, end int, followRedirects bool) (content []byte, err error) {
-	e := entity.NewBlob(http.MethodGet, repositoryName, dgs, true, start, end)
-	return r.fetchBlobCommon(e, followRedirects)
+	e := entity.NewBlob(http.MethodGet, repositoryName, dgs, true, start, end, followRedirects)
+	return r.fetchBlobCommon(e)
 }
 
 func (r *Registry) DeleteBlob(repositoryName, dgs string) (err error) {
-	e := entity.NewBlob(http.MethodDelete, repositoryName, dgs, false, 0, 0)
+	e := entity.NewBlob(http.MethodDelete, repositoryName, dgs, false, 0, 0, true)
 	_, err = r.NotCareBody(e)
 	if err != nil {
 		return
