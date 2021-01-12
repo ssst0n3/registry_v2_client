@@ -1,8 +1,6 @@
 package registry
 
 import (
-	"errors"
-	"github.com/PuerkitoBio/goquery"
 	"github.com/ssst0n3/awesome_libs/awesome_error"
 	"github.com/ssst0n3/registry_v2_client/entity"
 	"io/ioutil"
@@ -31,19 +29,7 @@ func (r Registry) fetchBlobCommon(e entity.Entity) (content []byte, err error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode == 302 {
-		doc, err := goquery.NewDocumentFromReader(resp.Body)
-		if err != nil {
-			awesome_error.CheckErr(err)
-			return nil, err
-		}
-		link, exists := doc.Find("a").First().Attr("href")
-		if !exists {
-			err = errors.New("link not exists")
-			awesome_error.CheckErr(err)
-			return nil, err
-		} else {
-			content = []byte(link)
-		}
+		content = []byte(resp.Header.Get("Location"))
 	} else if resp.StatusCode < 300 {
 		content, err = ioutil.ReadAll(resp.Body)
 		if err != nil {
