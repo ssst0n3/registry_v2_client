@@ -22,7 +22,7 @@ func (r Registry) GetBlob(repositoryName, dgs string) (exists bool, err error) {
 	return
 }
 
-func (r Registry) fetchBlobCommon(e entity.Entity) (body []byte, link string, err error) {
+func (r Registry) fetchBlobCommon(e entity.Entity, followRedirects bool) (content []byte, err error) {
 	resp, err := r.Do(e)
 	if err != nil {
 		awesome_error.CheckErr(err)
@@ -30,22 +30,22 @@ func (r Registry) fetchBlobCommon(e entity.Entity) (body []byte, link string, er
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode == 302 {
+	if !followRedirects && resp.StatusCode == 302 {
 		doc, err := goquery.NewDocumentFromReader(resp.Body)
 		if err != nil {
 			awesome_error.CheckErr(err)
-			return nil, "", err
+			return nil, err
 		}
-		l, exists := doc.Find("a").First().Attr("href")
+		link, exists := doc.Find("a").First().Attr("href")
 		if !exists {
 			err = errors.New("link not exists")
 			awesome_error.CheckErr(err)
-			return nil, "", err
+			return nil, err
 		} else {
-			link = l
+			content = []byte(link)
 		}
 	} else if resp.StatusCode < 300 {
-		body, err = ioutil.ReadAll(resp.Body)
+		content, err = ioutil.ReadAll(resp.Body)
 		if err != nil {
 			awesome_error.CheckErr(err)
 			return
@@ -54,14 +54,14 @@ func (r Registry) fetchBlobCommon(e entity.Entity) (body []byte, link string, er
 	return
 }
 
-func (r Registry) FetchBlob(repositoryName, dgs string) (body []byte, link string, err error) {
+func (r Registry) FetchBlob(repositoryName, dgs string, followRedirects bool) (content []byte, err error) {
 	e := entity.NewBlob(http.MethodGet, repositoryName, dgs, false, 0, 0)
-	return r.fetchBlobCommon(e)
+	return r.fetchBlobCommon(e, followRedirects)
 }
 
-func (r *Registry) FetchBlobPart(repositoryName, dgs string, start, end int) (body []byte, link string, err error) {
+func (r *Registry) FetchBlobPart(repositoryName, dgs string, start, end int, followRedirects bool) (content []byte, err error) {
 	e := entity.NewBlob(http.MethodGet, repositoryName, dgs, true, start, end)
-	return r.fetchBlobCommon(e)
+	return r.fetchBlobCommon(e, followRedirects)
 }
 
 func (r *Registry) DeleteBlob(repositoryName, dgs string) (err error) {

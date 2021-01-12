@@ -26,7 +26,7 @@ func TestRegistry_GetBlob(t *testing.T) {
 func TestRegistry_FetchBlob(t *testing.T) {
 	log.Logger.Level = logrus.DebugLevel
 	r := GetRegistryForTest()
-	body, link, err := r.FetchBlob("dkdk/hello-world", test_data.BlobHelloWolrdDigest)
+	body, err := r.FetchBlob("dkdk/hello-world", test_data.BlobHelloWolrdDigest)
 	assert.NoError(t, err)
 	assert.Equal(t, true, len(body)+len(link) > 0)
 }
@@ -34,7 +34,7 @@ func TestRegistry_FetchBlob(t *testing.T) {
 func TestRegistry_FetchBlobPart(t *testing.T) {
 	log.Logger.Level = logrus.DebugLevel
 	r := GetRegistryForTest()
-	body, _, err := r.FetchBlobPart("dkdk/hello-world", test_data.BlobHelloWolrdDigest, 0, 0)
+	body, err := r.FetchBlobPart("dkdk/hello-world", test_data.BlobHelloWolrdDigest, 0, 0)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, len(body))
 }
