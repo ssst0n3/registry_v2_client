@@ -1,8 +1,6 @@
 package registry
 
 import (
-	"encoding/base64"
-	"fmt"
 	"github.com/ssst0n3/awesome_libs"
 	"github.com/ssst0n3/awesome_libs/awesome_error"
 	"github.com/ssst0n3/awesome_libs/awesome_structs"
@@ -75,9 +73,16 @@ func (r Registry) Do(e entity.Entity) (resp *http.Response, err error) {
 		query.Add(k, v)
 	}
 	req.URL.RawQuery = query.Encode()
-	token := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(r.Username+":"+r.Password)))
-	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", token))
+	//token := fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(r.Username+":"+r.Password)))
+	//req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", token))
 	for k, v := range e.GetHeader() {
+		req.Header.Add(k, v)
+	}
+	tokenHeader, err := r.GetTokenHeader(req.URL.String())
+	if err != nil {
+		return
+	}
+	for k, v := range tokenHeader {
 		req.Header.Add(k, v)
 	}
 

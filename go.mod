@@ -5,8 +5,9 @@ go 1.14
 require (
 	github.com/containerd/containerd v1.4.3
 	github.com/docker/distribution v2.7.1+incompatible
+	github.com/docker/docker v1.4.2-0.20190916154449-92cc603036dd
+	github.com/genuinetools/reg v0.16.1
 	github.com/opencontainers/go-digest v1.0.0
-	github.com/opencontainers/image-spec v1.0.1 // indirect
 	github.com/sirupsen/logrus v1.7.0
 	github.com/ssst0n3/awesome_libs v0.5.8
 	github.com/stretchr/testify v1.6.1

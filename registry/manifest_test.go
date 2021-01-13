@@ -12,6 +12,7 @@ func TestRegistry(t *testing.T) {
 	log.Logger.Level = logrus.DebugLevel
 	r := GetRegistryForTest()
 	repositoryName := "dkdk/hello-world"
+
 	t.Run("get manifest", func(t *testing.T) {
 		reference := "v1"
 		m, err := r.GetManifest(repositoryName, reference)
