@@ -13,10 +13,11 @@ import (
 )
 
 type Registry struct {
-	ServiceAddress string `json:"service_address"`
-	Insecure       bool   `json:"insecure"`
-	Username       string `json:"username"`
-	Password       string `json:"password"`
+	ServiceAddress string            `json:"service_address"`
+	Insecure       bool              `json:"insecure"`
+	Username       string            `json:"username"`
+	Password       string            `json:"password"`
+	TokenHeader    map[string]string `json:"token_header"`
 	Client         *http.Client
 }
 
@@ -78,11 +79,13 @@ func (r Registry) Do(e entity.Entity) (resp *http.Response, err error) {
 	for k, v := range e.GetHeader() {
 		req.Header.Add(k, v)
 	}
-	tokenHeader, err := r.GetTokenHeader(req.URL.String())
-	if err != nil {
-		return
+	if len(r.TokenHeader) == 0 {
+		_, err := r.GetTokenHeader(req.URL.String())
+		if err != nil {
+			return resp, err
+		}
 	}
-	for k, v := range tokenHeader {
+	for k, v := range r.TokenHeader {
 		req.Header.Add(k, v)
 	}
 

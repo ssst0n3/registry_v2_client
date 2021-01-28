@@ -7,7 +7,7 @@ import (
 	"github.com/ssst0n3/awesome_libs/awesome_error"
 )
 
-func (r Registry) GetTokenHeader(url string) (header map[string]string, err error) {
+func (r *Registry) GetTokenHeader(url string) (header map[string]string, err error) {
 	// use reg for temporary using
 	cred := types.AuthConfig{
 		Username:      r.Username,
@@ -36,5 +36,6 @@ func (r Registry) GetTokenHeader(url string) (header map[string]string, err erro
 		awesome_error.CheckErr(err)
 		return
 	}
+	r.TokenHeader = header
 	return
 }
