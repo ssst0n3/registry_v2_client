@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (r Registry) GetBlobUpload(repositoryName, uuid string) (uploadRange string, err error) {
+func (r *Registry) GetBlobUpload(repositoryName, uuid string) (uploadRange string, err error) {
 	e := entity.NewBlobUpload(http.MethodGet, repositoryName, "", uuid, nil, false, 0, 0, entity.BlobUploadQuery{})
 	resp, err := r.NotCareBody(e)
 	if err != nil {
@@ -15,7 +15,7 @@ func (r Registry) GetBlobUpload(repositoryName, uuid string) (uploadRange string
 	return
 }
 
-func (r Registry) PatchBlobUpload(repositoryName, uuid string, binary []byte, chunked bool, start, end int) (location, uploadRange string) {
+func (r *Registry) PatchBlobUpload(repositoryName, uuid string, binary []byte, chunked bool, start, end int) (location, uploadRange string) {
 	e := entity.NewBlobUpload(http.MethodPatch, repositoryName, "", uuid, binary, chunked, start, end, entity.BlobUploadQuery{})
 	resp, err := r.NotCareBody(e)
 	if err != nil {
@@ -26,7 +26,7 @@ func (r Registry) PatchBlobUpload(repositoryName, uuid string, binary []byte, ch
 	return
 }
 
-func (r Registry) PutBlobUpload(repositoryName, loc, uuid, digest string, binary []byte) (location, contentRange string) {
+func (r *Registry) PutBlobUpload(repositoryName, loc, uuid, digest string, binary []byte) (location, contentRange string) {
 	e := entity.NewBlobUpload(http.MethodPut, repositoryName, loc, uuid, binary, false, 0, 0, entity.BlobUploadQuery{Digest: digest})
 	resp, err := r.NotCareBody(e)
 	if err != nil {
@@ -37,7 +37,7 @@ func (r Registry) PutBlobUpload(repositoryName, loc, uuid, digest string, binary
 	return
 }
 
-func (r Registry) DeleteBlobUpload(repositoryName, uuid string) (err error) {
+func (r *Registry) DeleteBlobUpload(repositoryName, uuid string) (err error) {
 	e := entity.NewBlobUpload(http.MethodDelete, repositoryName, "", uuid, nil, false, 0, 0, entity.BlobUploadQuery{})
 	_, err = r.NotCareBody(e)
 	return

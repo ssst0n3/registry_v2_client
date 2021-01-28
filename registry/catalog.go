@@ -8,7 +8,7 @@ import (
 	"github.com/ssst0n3/registry_v2_client/response"
 )
 
-func (r Registry) GetCatalog(query entity.CatalogQuery) (catalogResponse response.Catalog, err error) {
+func (r *Registry) GetCatalog(query entity.CatalogQuery) (catalogResponse response.Catalog, err error) {
 	e := entity.NewCatalog(query)
 	_, body, err := r.AutoReadBody(e)
 	if err != nil {

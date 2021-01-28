@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func (r Registry) GetBlob(repositoryName, dgs string) (exists bool, err error) {
+func (r *Registry) GetBlob(repositoryName, dgs string) (exists bool, err error) {
 	e := entity.NewBlob(http.MethodHead, repositoryName, dgs, false, 0, 0, true)
 	resp, err := r.NotCareBody(e)
 	if err != nil {
@@ -40,7 +40,7 @@ func (r *Registry) fetchBlobCommon(e entity.Entity) (content []byte, err error) 
 	return
 }
 
-func (r Registry) FetchBlob(repositoryName, dgs string, followRedirects bool) (content []byte, err error) {
+func (r *Registry) FetchBlob(repositoryName, dgs string, followRedirects bool) (content []byte, err error) {
 	e := entity.NewBlob(http.MethodGet, repositoryName, dgs, false, 0, 0, followRedirects)
 	return r.fetchBlobCommon(e)
 }

@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-func (r Registry) GetManifest(repositoryName, reference string) (manifest schema2.Manifest, err error) {
+func (r *Registry) GetManifest(repositoryName, reference string) (manifest schema2.Manifest, err error) {
 	e := entity.NewManifest(repositoryName, reference, http.MethodGet, schema2.Manifest{})
 	_, body, err := r.AutoReadBody(e)
 	if err != nil {
@@ -24,7 +24,7 @@ func (r Registry) GetManifest(repositoryName, reference string) (manifest schema
 	return
 }
 
-func (r Registry) TamperingManifest(repositoryName, reference string, body io.Reader) (err error) {
+func (r *Registry) TamperingManifest(repositoryName, reference string, body io.Reader) (err error) {
 	e := entity.NewManifestForTampering(repositoryName, reference, body)
 	_, err = r.NotCareBody(e)
 	if err != nil {
@@ -34,7 +34,7 @@ func (r Registry) TamperingManifest(repositoryName, reference string, body io.Re
 	return
 }
 
-func (r Registry) PutManifest(repositoryName, reference string, manifest schema2.Manifest) (err error) {
+func (r *Registry) PutManifest(repositoryName, reference string, manifest schema2.Manifest) (err error) {
 	e := entity.NewManifest(repositoryName, reference, http.MethodPut, manifest)
 	_, err = r.NotCareBody(e)
 	if err != nil {
@@ -44,7 +44,7 @@ func (r Registry) PutManifest(repositoryName, reference string, manifest schema2
 	return
 }
 
-func (r Registry) DeleteManifest(repositoryName, reference string) (err error) {
+func (r *Registry) DeleteManifest(repositoryName, reference string) (err error) {
 	e := entity.NewManifest(repositoryName, reference, http.MethodDelete, schema2.Manifest{})
 	_, err = r.NotCareBody(e)
 	if err != nil {

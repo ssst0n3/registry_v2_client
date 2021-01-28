@@ -5,7 +5,7 @@ import (
 	"github.com/ssst0n3/registry_v2_client/entity"
 )
 
-func (r Registry) GetBase() (err error) {
+func (r *Registry) GetBase() (err error) {
 	base := entity.NewBase()
 	_, _, err = r.AutoReadBody(base)
 	if err != nil {
