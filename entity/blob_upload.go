@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type BlobUploadQuery struct {
@@ -16,6 +17,7 @@ type BlobUploadQuery struct {
 type BlobUpload struct {
 	Method         string          `json:"method"`
 	RepositoryName string          `json:"repository_name"`
+	Location       string          `json:"location"`
 	Uuid           string          `json:"uuid"`
 	Binary         []byte          `json:"binary"`
 	Chunked        bool            `json:"chunked"`
@@ -24,10 +26,11 @@ type BlobUpload struct {
 	Query          BlobUploadQuery `json:"query"`
 }
 
-func NewBlobUpload(method, repositoryName, uuid string, binary []byte, chunked bool, start, end int, query BlobUploadQuery) BlobUpload {
+func NewBlobUpload(method, repositoryName, location, uuid string, binary []byte, chunked bool, start, end int, query BlobUploadQuery) BlobUpload {
 	return BlobUpload{
 		Method:         method,
 		RepositoryName: repositoryName,
+		Location:       location,
 		Uuid:           uuid,
 		Binary:         binary,
 		Chunked:        chunked,
@@ -38,6 +41,9 @@ func NewBlobUpload(method, repositoryName, uuid string, binary []byte, chunked b
 }
 
 func (e BlobUpload) Uri() (uri string) {
+	if len(e.Location) > 0 {
+		return e.Location[strings.Index(e.Location, "/v2"):]
+	}
 	return awesome_libs.Format("/v2/{.name}/blobs/uploads/{.uuid}", awesome_libs.Dict{
 		"name": e.RepositoryName,
 		"uuid": e.Uuid,

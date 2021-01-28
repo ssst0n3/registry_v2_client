@@ -6,7 +6,7 @@ import (
 )
 
 func (r Registry) GetBlobUpload(repositoryName, uuid string) (uploadRange string, err error) {
-	e := entity.NewBlobUpload(http.MethodGet, repositoryName, uuid, nil, false, 0, 0, entity.BlobUploadQuery{})
+	e := entity.NewBlobUpload(http.MethodGet, repositoryName, "", uuid, nil, false, 0, 0, entity.BlobUploadQuery{})
 	resp, err := r.NotCareBody(e)
 	if err != nil {
 		return
@@ -16,7 +16,7 @@ func (r Registry) GetBlobUpload(repositoryName, uuid string) (uploadRange string
 }
 
 func (r Registry) PatchBlobUpload(repositoryName, uuid string, binary []byte, chunked bool, start, end int) (location, uploadRange string) {
-	e := entity.NewBlobUpload(http.MethodPatch, repositoryName, uuid, binary, chunked, start, end, entity.BlobUploadQuery{})
+	e := entity.NewBlobUpload(http.MethodPatch, repositoryName, "", uuid, binary, chunked, start, end, entity.BlobUploadQuery{})
 	resp, err := r.NotCareBody(e)
 	if err != nil {
 		return
@@ -26,8 +26,8 @@ func (r Registry) PatchBlobUpload(repositoryName, uuid string, binary []byte, ch
 	return
 }
 
-func (r Registry) PutBlobUpload(repositoryName, uuid, digest string, binary []byte) (location, contentRange string) {
-	e := entity.NewBlobUpload(http.MethodPut, repositoryName, uuid, binary, false, 0, 0, entity.BlobUploadQuery{Digest: digest})
+func (r Registry) PutBlobUpload(repositoryName, loc, uuid, digest string, binary []byte) (location, contentRange string) {
+	e := entity.NewBlobUpload(http.MethodPut, repositoryName, loc, uuid, binary, false, 0, 0, entity.BlobUploadQuery{Digest: digest})
 	resp, err := r.NotCareBody(e)
 	if err != nil {
 		return
@@ -38,7 +38,7 @@ func (r Registry) PutBlobUpload(repositoryName, uuid, digest string, binary []by
 }
 
 func (r Registry) DeleteBlobUpload(repositoryName, uuid string) (err error) {
-	e := entity.NewBlobUpload(http.MethodDelete, repositoryName, uuid, nil, false, 0, 0, entity.BlobUploadQuery{})
+	e := entity.NewBlobUpload(http.MethodDelete, repositoryName, "", uuid, nil, false, 0, 0, entity.BlobUploadQuery{})
 	_, err = r.NotCareBody(e)
 	return
 }
