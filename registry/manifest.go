@@ -5,6 +5,7 @@ import (
 	"github.com/docker/distribution/manifest/schema2"
 	"github.com/ssst0n3/awesome_libs/awesome_error"
 	"github.com/ssst0n3/registry_v2_client/entity"
+	"io"
 	"net/http"
 )
 
@@ -16,6 +17,16 @@ func (r Registry) GetManifest(repositoryName, reference string) (manifest schema
 		return
 	}
 	err = json.Unmarshal(body, &manifest)
+	if err != nil {
+		awesome_error.CheckErr(err)
+		return
+	}
+	return
+}
+
+func (r Registry) TamperingManifest(repositoryName, reference string, body io.Reader) (err error) {
+	e := entity.NewManifestForTampering(repositoryName, reference, body)
+	_, err = r.NotCareBody(e)
 	if err != nil {
 		awesome_error.CheckErr(err)
 		return

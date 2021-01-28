@@ -12,10 +12,12 @@ import (
 )
 
 type Manifest struct {
-	Name      string           `json:"name"`
-	Reference string           `json:"reference"`
-	Method    string           `json:"method"`
-	Manifest  schema2.Manifest `json:"manifest"`
+	Name          string           `json:"name"`
+	Reference     string           `json:"reference"`
+	Method        string           `json:"method"`
+	Manifest      schema2.Manifest `json:"manifest"`
+	Tampering     bool             `json:"tampering"`
+	TamperingBody io.Reader
 }
 
 func NewManifest(repositoryName, reference, method string, manifest schema2.Manifest) Manifest {
@@ -24,6 +26,16 @@ func NewManifest(repositoryName, reference, method string, manifest schema2.Mani
 		Reference: reference,
 		Method:    method,
 		Manifest:  manifest,
+	}
+}
+
+func NewManifestForTampering(repositoryName, reference string, tamperingBody io.Reader) Manifest {
+	return Manifest{
+		Name:          repositoryName,
+		Reference:     reference,
+		Method:        http.MethodPut,
+		Tampering:     true,
+		TamperingBody: tamperingBody,
 	}
 }
 
@@ -43,6 +55,10 @@ func (e Manifest) GetQuery() (query interface{}) {
 }
 
 func (e Manifest) GetBody() (body io.Reader, err error) {
+	if e.Tampering {
+		body = e.TamperingBody
+		return
+	}
 	switch e.Method {
 	case http.MethodPut:
 		m, err := json.Marshal(e.Manifest)
