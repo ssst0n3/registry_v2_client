@@ -51,7 +51,7 @@ func (r *Registry) GetBody(e entity.Entity) (reader io.Reader, err error) {
 	return
 }
 
-func (r Registry) Do(e entity.Entity) (resp *http.Response, err error) {
+func (r *Registry) Do(e entity.Entity) (resp *http.Response, err error) {
 	url := r.Url(e)
 	log.Logger.Debugf("url: %s", url)
 
@@ -111,7 +111,7 @@ func (r Registry) Do(e entity.Entity) (resp *http.Response, err error) {
 	return
 }
 
-func (r Registry) NotCareBody(e entity.Entity) (resp *http.Response, err error) {
+func (r *Registry) NotCareBody(e entity.Entity) (resp *http.Response, err error) {
 	resp, err = r.Do(e)
 	if err != nil {
 		return

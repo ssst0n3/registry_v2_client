@@ -20,7 +20,7 @@ func (r Registry) GetBlob(repositoryName, dgs string) (exists bool, err error) {
 	return
 }
 
-func (r Registry) fetchBlobCommon(e entity.Entity) (content []byte, err error) {
+func (r *Registry) fetchBlobCommon(e entity.Entity) (content []byte, err error) {
 	resp, err := r.Do(e)
 	if err != nil {
 		awesome_error.CheckErr(err)
