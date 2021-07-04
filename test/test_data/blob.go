@@ -1,3 +1,3 @@
 package test_data
 
-var BlobHelloWolrdDigest = "sha256:0e03bdcc26d7a9a57ef3b6f1bf1a210cff6239bff7c8cac72435984032851689"
+var BlobHelloWorldDigest = "sha256:9f5a74d688881b9b1c2e97b70e9480f89d26e62f221c4130f5a9f28c1a96bf99"

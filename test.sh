@@ -1,9 +1,6 @@
 #!/bin/bash
 # init registry
-docker-compose down
-docker-compose up -d
-# init test data
-docker pull hello-world
-docker tag hello-world 127.0.0.1:5000/dkdk/hello-world:v1
-docker push 127.0.0.1:5000/dkdk/hello-world:v1
-go test -count=1 -parallel 1 -v ./...
+ln -s $(pwd) /tmp/registry
+./init.sh
+#go test -count=1 -parallel 1 -v ./...
+for s in $(go list ./...); do if ! go test -failfast -v -p 1 $s; then break; fi; done

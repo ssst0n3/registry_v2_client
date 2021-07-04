@@ -7,21 +7,30 @@ import (
 	"github.com/docker/distribution/manifest/schema2"
 )
 
-var ManifestHelloWorld = schema2.Manifest{
-	Versioned: manifest.Versioned{
-		SchemaVersion: 2,
-		MediaType:     images.MediaTypeDockerSchema2Manifest,
-	},
-	Config: distribution.Descriptor{
-		MediaType: images.MediaTypeDockerSchema2Config,
-		Size:      1510,
-		Digest:    "sha256:bf756fb1ae65adf866bd8c456593cd24beb6a0a061dedf42b26a993176745f6b",
-	},
-	Layers: []distribution.Descriptor{
-		{
-			MediaType: images.MediaTypeDockerSchema2LayerGzip,
-			Size:      2529,
-			Digest:    "sha256:0e03bdcc26d7a9a57ef3b6f1bf1a210cff6239bff7c8cac72435984032851689",
+var (
+	ManifestHelloWorld = schema2.Manifest{
+		Versioned: manifest.Versioned{
+			SchemaVersion: 2,
+			MediaType:     images.MediaTypeDockerSchema2Manifest,
 		},
-	},
-}
+		Config: distribution.Descriptor{
+			MediaType: images.MediaTypeDockerSchema2Config,
+			Size:      1729,
+			Digest:    "sha256:a1cec1bba3abba8c203e81c8c1d315e932e26bee578725a3a376704ce4203f90",
+		},
+		Layers: []distribution.Descriptor{
+			{
+				MediaType: images.MediaTypeDockerSchema2LayerGzip,
+				Size:      709433,
+				Digest:    "sha256:9f5a74d688881b9b1c2e97b70e9480f89d26e62f221c4130f5a9f28c1a96bf99",
+			},
+		},
+	}
+	ManifestHelloWorldDigest = "sha256:c7c17e128826cacab26313fa54f3137c5a692611fcbf2e4279ca2226f8f406b9"
+)
+
+//func init() {
+//	bytes, err := json.Marshal(ManifestHelloWorld)
+//	awesome_error.CheckFatal(err)
+//	ManifestHelloWorldDigest = digest.FromBytes(bytes)
+//}

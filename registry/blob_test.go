@@ -12,7 +12,7 @@ func TestRegistry_GetBlob(t *testing.T) {
 	log.Logger.Level = logrus.DebugLevel
 	r := GetRegistryForTest()
 	t.Run("exists", func(t *testing.T) {
-		exists, err := r.GetBlob("dkdk/hello-world", test_data.BlobHelloWolrdDigest)
+		exists, err := r.GetBlob("dkdk/hello-world", test_data.BlobHelloWorldDigest)
 		assert.NoError(t, err)
 		assert.Equal(t, true, exists)
 	})
@@ -26,7 +26,7 @@ func TestRegistry_GetBlob(t *testing.T) {
 func TestRegistry_FetchBlob(t *testing.T) {
 	log.Logger.Level = logrus.DebugLevel
 	r := GetRegistryForTest()
-	body, err := r.FetchBlob("dkdk/hello-world", test_data.BlobHelloWolrdDigest, true)
+	body, err := r.FetchBlob("dkdk/hello-world", test_data.BlobHelloWorldDigest, true)
 	assert.NoError(t, err)
 	assert.Equal(t, true, len(body) > 0)
 }
@@ -34,7 +34,7 @@ func TestRegistry_FetchBlob(t *testing.T) {
 func TestRegistry_FetchBlobPart(t *testing.T) {
 	log.Logger.Level = logrus.DebugLevel
 	r := GetRegistryForTest()
-	body, err := r.FetchBlobPart("dkdk/hello-world", test_data.BlobHelloWolrdDigest, 0, 0, true)
+	body, err := r.FetchBlobPart("dkdk/hello-world", test_data.BlobHelloWorldDigest, 0, 0, true)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, len(body))
 }
@@ -43,9 +43,9 @@ func TestRegistry_DeleteBlob(t *testing.T) {
 	log.Logger.Level = logrus.DebugLevel
 	repositoryName := "dkdk/hello-world"
 	r := GetRegistryForTest()
-	err := r.DeleteBlob(repositoryName, test_data.BlobHelloWolrdDigest)
+	err := r.DeleteBlob(repositoryName, test_data.BlobHelloWorldDigest)
 	assert.NoError(t, err)
-	exists, err := r.GetBlob(repositoryName, test_data.BlobHelloWolrdDigest)
+	exists, err := r.GetBlob(repositoryName, test_data.BlobHelloWorldDigest)
 	assert.NoError(t, err)
 	assert.Equal(t, false, exists)
 }

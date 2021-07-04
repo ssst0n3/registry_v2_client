@@ -1,6 +1,7 @@
 package registry
 
 import (
+	"github.com/docker/distribution/manifest/schema2"
 	"github.com/sirupsen/logrus"
 	"github.com/ssst0n3/awesome_libs/log"
 	"github.com/ssst0n3/registry_v2_client/test/test_data"
@@ -21,18 +22,22 @@ func TestRegistry(t *testing.T) {
 	})
 
 	t.Run("put", func(t *testing.T) {
+		InitRegistryForTest(t)
 		reference := "v2"
 		err := r.PutManifest(repositoryName, reference, test_data.ManifestHelloWorld)
 		assert.NoError(t, err)
 		m, err := r.GetManifest(repositoryName, reference)
 		assert.NoError(t, err)
 		assert.Equal(t, test_data.ManifestHelloWorld, m)
+		InitRegistryForTest(t)
 	})
 
 	t.Run("delete", func(t *testing.T) {
-		reference := "sha256:deea9d5fd7a5915c08d0b988e5b5bfed0d5ea9a632ddf70c9a79d08764b104fa"
+		reference := test_data.ManifestHelloWorldDigest
 		assert.NoError(t, r.DeleteManifest(repositoryName, reference))
-		_, err := r.GetManifest(repositoryName, "v2")
-		assert.Error(t, err)
+		m, err := r.GetManifest(repositoryName, "v1")
+		assert.NoError(t, err)
+		assert.Equal(t, schema2.Manifest{}, m)
+		InitRegistryForTest(t)
 	})
 }
