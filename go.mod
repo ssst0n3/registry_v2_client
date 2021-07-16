@@ -11,6 +11,7 @@ require (
 	github.com/sirupsen/logrus v1.7.0
 	github.com/ssst0n3/awesome_libs v0.5.8
 	github.com/stretchr/testify v1.6.1
+	github.com/urfave/cli/v2 v2.3.0
 	golang.org/x/net v0.0.0-20200202094626-16171245cfb2 // indirect
 	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a // indirect
 	google.golang.org/grpc v1.34.0 // indirect

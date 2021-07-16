@@ -132,3 +132,5 @@ func (r *Registry) AutoReadBody(e entity.Entity) (resp *http.Response, body []by
 	}
 	return
 }
+
+// TODO: auto parse response status_code
