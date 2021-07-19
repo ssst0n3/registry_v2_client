@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/containerd/containerd v1.4.3
+	github.com/davecgh/go-spew v1.1.1
 	github.com/docker/distribution v2.7.1+incompatible
 	github.com/docker/docker v1.4.2-0.20190916154449-92cc603036dd
 	github.com/genuinetools/reg v0.16.1
