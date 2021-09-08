@@ -1,6 +1,7 @@
 package registry
 
 import (
+	"github.com/davecgh/go-spew/spew"
 	"github.com/docker/distribution/manifest/schema2"
 	"github.com/sirupsen/logrus"
 	"github.com/ssst0n3/awesome_libs/log"
@@ -9,7 +10,16 @@ import (
 	"testing"
 )
 
-func TestRegistry(t *testing.T) {
+func TestDockerHub(t *testing.T) {
+	log.Logger.Level = logrus.DebugLevel
+	r := NewRegistry("index.docker.io", "", "", false)
+	repositoryName := "library/hello-world"
+	m, err := r.GetManifest(repositoryName, "latest")
+	assert.NoError(t, err)
+	spew.Dump(m)
+}
+
+func TestRegistryForTest(t *testing.T) {
 	log.Logger.Level = logrus.DebugLevel
 	r := GetRegistryForTest()
 	repositoryName := "dkdk/hello-world"

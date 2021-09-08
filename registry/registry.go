@@ -6,6 +6,7 @@ import (
 	"github.com/ssst0n3/awesome_libs/awesome_structs"
 	"github.com/ssst0n3/awesome_libs/log"
 	"github.com/ssst0n3/registry_v2_client/entity"
+	http2 "github.com/ssst0n3/registry_v2_client/http"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -27,7 +28,7 @@ func NewRegistry(serviceAddress, username, password string, insecure bool) Regis
 		Insecure:       insecure,
 		Username:       username,
 		Password:       password,
-		Client:         http.DefaultClient,
+		Client:         http2.NewClient(username, password),
 	}
 }
 
@@ -80,10 +81,11 @@ func (r *Registry) Do(e entity.Entity) (resp *http.Response, err error) {
 		req.Header.Add(k, v)
 	}
 	if len(r.TokenHeader) == 0 {
-		_, err := r.GetTokenHeader(req.URL.String())
-		if err != nil {
-			return resp, err
-		}
+		//req.SetBasicAuth(r.Username, r.Password)
+		//_, err := r.GetTokenHeader(req.URL.String())
+		//if err != nil {
+		//	return resp, err
+		//}
 	}
 	for k, v := range r.TokenHeader {
 		req.Header.Add(k, v)

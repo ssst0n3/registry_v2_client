@@ -14,7 +14,7 @@ var Registry registry.Registry
 
 func main() {
 	app := &cli.App{
-		Name:  "ctrsploit",
+		Name:  "reg cli",
 		Usage: usage,
 		Commands: []*cli.Command{
 			manifest,
@@ -27,12 +27,14 @@ func main() {
 				Usage:    "the address of registry",
 			},
 			&cli.StringFlag{
-				Name:  "username",
-				Usage: "username",
+				Name:    "username",
+				Aliases: []string{"u"},
+				Usage:   "username",
 			},
 			&cli.StringFlag{
-				Name:  "password",
-				Usage: "password",
+				Name:    "password",
+				Aliases: []string{"p"},
+				Usage:   "password",
 			},
 			&cli.BoolFlag{
 				Name:    "insecure",
@@ -42,6 +44,7 @@ func main() {
 			},
 			&cli.BoolFlag{
 				Name:  "debug",
+				Aliases: []string{"d"},
 				Value: false,
 				Usage: "debug",
 			},

@@ -11,8 +11,8 @@ import (
 	"net/http"
 )
 
-func (r *Registry) GetManifest(repositoryName, reference string) (manifest schema2.Manifest, err error) {
-	e := entity.NewManifest(repositoryName, reference, http.MethodGet, schema2.Manifest{})
+func (r *Registry) GetManifest(repositoryName, ref string) (manifest schema2.Manifest, err error) {
+	e := entity.NewManifest(repositoryName, ref, http.MethodGet, schema2.Manifest{})
 	_, body, err := r.AutoReadBody(e)
 	if err != nil {
 		awesome_error.CheckErr(err)
