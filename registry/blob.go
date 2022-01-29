@@ -28,7 +28,7 @@ func (r *Registry) fetchBlobCommon(e entity.Entity) (content []byte, err error) 
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode == 302 {
+	if resp.StatusCode == 302 || resp.StatusCode == 307 {
 		content = []byte(resp.Header.Get("Location"))
 	} else if resp.StatusCode < 300 {
 		content, err = ioutil.ReadAll(resp.Body)
